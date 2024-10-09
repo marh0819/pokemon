@@ -16,14 +16,14 @@ public class Pokemon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_Pokemon") // Asegúrate de que el nombre sea correcto
-    private Integer id_Pokemon; // Cambiado a Integer para permitir null
+    private Integer idPokemon; // Cambiado a Integer para permitir null
 
     @Column(name = "nombre") // Opcional, pero buena práctica
     private String nombre;
 
     @Column(name = "id_TipoPrimario") // Opcional, pero buena práctica
-    private Integer id_TipoPrimario;
+    private Integer idTipoPrimario;
 
     @Column(name = "id_TipoSecundario") // Opcional, pero buena práctica
-    private Integer id_TipoSecundario;
+    private Integer idTipoSecundario;
 }
