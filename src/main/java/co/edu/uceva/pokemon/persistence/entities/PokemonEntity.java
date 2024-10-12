@@ -1,29 +1,31 @@
 package co.edu.uceva.pokemon.persistence.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "Pokemon_Info")
 public class PokemonEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Pokemon") // Asegúrate de que el nombre sea correcto
-    private Integer idPokemon; // Cambiado a Integer para permitir null
+    @Column(name = "id_Pokemon")
+    private Integer idPokemon;
 
-    @Column(name = "nombre") // Opcional, pero buena práctica
+    @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "id_TipoPrimario") // Opcional, pero buena práctica
-    private Integer idTipoPrimario;
+    @ManyToOne // Indica que es una relación muchos a uno
+    @JoinColumn(name = "id_Tipo_Primario", referencedColumnName = "id_tipo") // Referencia a la clave primaria de TiposEntity
+    private TiposEntity tipoPrimario;
 
-    @Column(name = "id_TipoSecundario") // Opcional, pero buena práctica
-    private Integer idTipoSecundario;
+    @ManyToOne // Indica que es una relación muchos a uno
+    @JoinColumn(name = "id_Tipo_Secundario", referencedColumnName = "id_tipo") // Referencia a la clave primaria de TiposEntity
+    private TiposEntity tipoSecundario;
+
+    @OneToMany(mappedBy = "pokemon") // Relación inversa con PokemonHabilidadEntity
+    private List<PokemonHabilidadEntity> habilidades; // Lista de habilidades asociadas
 }

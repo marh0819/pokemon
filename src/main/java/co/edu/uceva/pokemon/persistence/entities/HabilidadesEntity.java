@@ -1,10 +1,13 @@
 package co.edu.uceva.pokemon.persistence.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -12,15 +15,17 @@ import lombok.Data;
 @Entity
 @Table(name = "habilidades")
 public class HabilidadesEntity {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_habilidades") // Asegúrate de que el nombre sea correcto
-    private Integer idHabilidades; // Cambiado a Integer para permitir null
+    @Column(name = "id_habilidades")
+    private Integer idHabilidades;
 
-    @Column(name = "nombre_habilidad") // Opcional, pero buena práctica
+    @Column(name = "nombre_habilidad")
     private String nombreHabilidad;
 
-    @Column(name = "descripcion") // Opcional, pero buena práctica
+    @Column(name = "descripcion")
     private Integer descripcion;
+
+    @OneToMany(mappedBy = "habilidad") // Relación inversa
+    private List<PokemonHabilidadEntity> pokemonHabilidades; // Opcional
 }

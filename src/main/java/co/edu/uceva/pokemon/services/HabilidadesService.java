@@ -22,19 +22,19 @@ public class HabilidadesService {
         return habilidadesRepository.findAll();
     }
 
-    public Optional<HabilidadesEntity> getHabilidades(int id){
-        return habilidadesRepository.findById(Long.valueOf (id));
+    public Optional<HabilidadesEntity> getHabilidades(int id) {
+        return habilidadesRepository.findById(Long.valueOf(id));
     }
 
-    public void save(HabilidadesEntity pokemon){
-        habilidadesRepository.save(pokemon);
+    public void save(HabilidadesEntity habilidad) {
+        habilidadesRepository.save(habilidad);
     }
 
     public void update(HabilidadesEntity pokemon){
         habilidadesRepository.save(pokemon);
     }
 
-    public void delete(int id){
-        habilidadesRepository.deleteById(Long.valueOf (id));
+    public void delete(int id) {
+        habilidadesRepository.deleteById(Long.valueOf(id));
     }
 }

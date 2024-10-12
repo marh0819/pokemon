@@ -1,9 +1,9 @@
 package co.edu.uceva.pokemon.controllers;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uceva.pokemon.persistence.entities.PokemonHabilidadEntity;
 import co.edu.uceva.pokemon.services.PokemonHabilidadService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(path = "api/v1/pokemonHabilidad")
@@ -26,27 +27,25 @@ public class PokemonHabilidadController {
         this.pokemonHabilidadService = pokemonHabilidadService;
     }
 
-    // Listar todas las relaciones pokemon-habilidad
     @GetMapping("/listar")
     public List<PokemonHabilidadEntity> getAll() {
         return pokemonHabilidadService.getAllPokemonHabilidades();
     }
 
-    // Obtener una relación pokemon-habilidad por la clave compuesta (idPokemon, idHabilidad)
     @GetMapping("/{idPokemon}/{idHabilidad}")
-    public Optional<PokemonHabilidadEntity> getByID(
-        @PathVariable("idPokemon") int idPokemon, 
-        @PathVariable("idHabilidad") int idHabilidad) {
-        return pokemonHabilidadService.getPokemonHabilidad(idPokemon, idHabilidad);
+    public ResponseEntity<PokemonHabilidadEntity> getByID(@PathVariable("idPokemon") int idPokemon, 
+                                                          @PathVariable("idHabilidad") int idHabilidad) {
+        return pokemonHabilidadService.getPokemonHabilidad(idPokemon, idHabilidad)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Guardar una nueva relación pokemon-habilidad
     @PostMapping("/guardar")
-    public void save(@RequestBody PokemonHabilidadEntity pokemonHabilidad) {
+    public ResponseEntity<Void> save(@Valid @RequestBody PokemonHabilidadEntity pokemonHabilidad) {
         pokemonHabilidadService.save(pokemonHabilidad);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // Actualizar una relación pokemon-habilidad
     @PostMapping("/actualizar/{idPokemon}/{idHabilidad}")
     public void update(
         @PathVariable("idPokemon") int idPokemon,
@@ -55,11 +54,10 @@ public class PokemonHabilidadController {
         pokemonHabilidadService.update(pokemonHabilidad);
     }
 
-    // Eliminar una relación pokemon-habilidad por la clave compuesta
     @DeleteMapping("/{idPokemon}/{idHabilidad}")
-    public void delete(
-        @PathVariable("idPokemon") int idPokemon, 
-        @PathVariable("idHabilidad") int idHabilidad) {
+    public ResponseEntity<Void> delete(@PathVariable("idPokemon") int idPokemon, 
+                                        @PathVariable("idHabilidad") int idHabilidad) {
         pokemonHabilidadService.delete(idPokemon, idHabilidad);
+        return ResponseEntity.noContent().build();
     }
 }

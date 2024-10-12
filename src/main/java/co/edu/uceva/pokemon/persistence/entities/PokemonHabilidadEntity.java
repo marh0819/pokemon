@@ -1,9 +1,6 @@
 package co.edu.uceva.pokemon.persistence.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -17,29 +14,28 @@ public class PokemonHabilidadEntity {
     @Column(name = "habilidad_oculta")
     private Boolean habilidadOculta;
 
-    // Constructores, getters y setters
+    // Relación con PokemonEntity
+    @ManyToOne
+    @MapsId("idPokemon") // Mapea la parte de la clave compuesta
+    @JoinColumn(name = "id_pokemon", referencedColumnName = "id_Pokemon") // Referencia a la clave primaria de PokemonEntity
+    private PokemonEntity pokemon;
 
+    // Relación con HabilidadesEntity
+    @ManyToOne
+    @MapsId("idHabilidad") // Mapea la parte de la clave compuesta
+    @JoinColumn(name = "id_habilidad", referencedColumnName = "id_habilidades") // Referencia a la clave primaria de HabilidadesEntity
+    private HabilidadesEntity habilidad;
+
+    // Constructores
     public PokemonHabilidadEntity() {
     }
 
-    public PokemonHabilidadEntity(PokemonHabilidadId id, Boolean habilidadOculta) {
+    public PokemonHabilidadEntity(PokemonHabilidadId id, Boolean habilidadOculta, PokemonEntity pokemon, HabilidadesEntity habilidad) {
         this.id = id;
         this.habilidadOculta = habilidadOculta;
+        this.pokemon = pokemon;
+        this.habilidad = habilidad;
     }
 
-    public PokemonHabilidadId getId() {
-        return id;
-    }
-
-    public void setId(PokemonHabilidadId id) {
-        this.id = id;
-    }
-
-    public Boolean getHabilidadOculta() {
-        return habilidadOculta;
-    }
-
-    public void setHabilidadOculta(Boolean habilidadOculta) {
-        this.habilidadOculta = habilidadOculta;
-    }
+    // Getters y Setters
 }
