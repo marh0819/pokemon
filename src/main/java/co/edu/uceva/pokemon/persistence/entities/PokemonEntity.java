@@ -1,4 +1,4 @@
-package co.edu.uceva.pokemon.entity;
+package co.edu.uceva.pokemon.persistence.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "Pokemon_Info")
-public class Pokemon {
+public class PokemonEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
