@@ -2,7 +2,6 @@ package co.edu.uceva.pokemon.persistence.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.List;
 
 @Data
 @Entity
@@ -17,9 +16,4 @@ public class TiposEntity {
     @Column(name = "nombre_tipo") // Opcional, pero buena práctica
     private String nombreTipo;
 
-    @OneToMany(mappedBy = "tipoPrimario") // Relación con PokemonEntity
-    private List<PokemonEntity> pokemonsTipoPrimario;
-
-    @OneToMany(mappedBy = "tipoSecundario") // Relación con PokemonEntity
-    private List<PokemonEntity> pokemonsTipoSecundario;
 }

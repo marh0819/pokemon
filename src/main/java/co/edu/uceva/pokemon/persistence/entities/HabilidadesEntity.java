@@ -24,8 +24,5 @@ public class HabilidadesEntity {
     private String nombreHabilidad;
 
     @Column(name = "descripcion")
-    private Integer descripcion;
-
-    @OneToMany(mappedBy = "habilidad") // Relación inversa
-    private List<PokemonHabilidadEntity> pokemonHabilidades; // Opcional
+    private String descripcion;
 }
