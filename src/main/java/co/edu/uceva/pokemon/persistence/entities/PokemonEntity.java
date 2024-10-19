@@ -3,8 +3,6 @@ package co.edu.uceva.pokemon.persistence.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @Entity
 @Table(name = "Pokemon_Info")

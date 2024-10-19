@@ -3,16 +3,10 @@ package co.edu.uceva.pokemon.persistence.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Data
 @Entity
 @Table(name = "user")
 public class UserEntity {
-
-    public UserEntity() {
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
