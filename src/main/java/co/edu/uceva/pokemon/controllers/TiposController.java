@@ -42,13 +42,13 @@ public class TiposController {
     }
 
     @PostMapping("/actualizar/{idTipos}")
-    public void update(@PathVariable Long idTipos, @RequestBody TiposEntity tipos) {
+    public void update(@PathVariable int idTipos, @RequestBody TiposEntity tipos) {
         tipos.setIdTipo(idTipos); // No es necesario convertir a int
         tiposService.update(tipos);
     }
 
     @DeleteMapping("/{idTipos}")
-    public void delete(@PathVariable("idTipos") Long idTipos) { // Cambiar a Long
-        tiposService.delete(idTipos.intValue());
+    public void delete(@PathVariable("idTipos") int idTipos) { // Cambiar a Long
+        tiposService.delete(idTipos);
     }
 }

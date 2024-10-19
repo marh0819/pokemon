@@ -32,7 +32,9 @@ public class PokemonService {
 
     public void save(PokemonEntity pokemon) {
         if (pokemon.getTipoPrimario() != null && pokemon.getTipoPrimario().getIdTipo() != null) {
-            TiposEntity tipoPrimario = tiposRepository.findById(pokemon.getTipoPrimario().getIdTipo()).orElse(null);
+            // Convertir a Long
+            Long idTipoPrimario = Long.valueOf(pokemon.getTipoPrimario().getIdTipo());
+            TiposEntity tipoPrimario = tiposRepository.findById(idTipoPrimario).orElse(null);
             if (tipoPrimario != null) {
                 pokemon.setTipoPrimario(tipoPrimario);
             } else {
@@ -40,7 +42,9 @@ public class PokemonService {
             }
         }
         if (pokemon.getTipoSecundario() != null && pokemon.getTipoSecundario().getIdTipo() != null) {
-            TiposEntity tipoSecundario = tiposRepository.findById(pokemon.getTipoSecundario().getIdTipo()).orElse(null);
+            // Convertir a Long
+            Long idTipoSecundario = Long.valueOf(pokemon.getTipoSecundario().getIdTipo());
+            TiposEntity tipoSecundario = tiposRepository.findById(idTipoSecundario).orElse(null);
             if (tipoSecundario != null) {
                 pokemon.setTipoSecundario(tipoSecundario);
             } else {
