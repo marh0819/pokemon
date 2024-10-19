@@ -90,7 +90,7 @@ public class AuthServiceImpl implements IAuthService {
             return response;
         } catch (Exception e) {
             // Solo lanza la excepción sin registrar
-            throw new Exception("Error during registration", e);
+            throw new IllegalArgumentException("Error during registration", e);
         }
     }
 
