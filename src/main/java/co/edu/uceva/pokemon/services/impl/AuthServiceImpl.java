@@ -18,6 +18,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class AuthServiceImpl implements IAuthService {
 
@@ -34,6 +37,12 @@ public class AuthServiceImpl implements IAuthService {
         this.jwtUtilityService = jwtUtilityService;
         this.userValidations = userValidations;
     }
+    public AuthServiceImpl(UserRepository userRepository, IJWTUtilityService jwtUtilityService,
+            UserValidations userValidations) {
+        this.userRepository = userRepository;
+        this.jwtUtilityService = jwtUtilityService;
+        this.userValidations = userValidations;
+    }
 
     @Override
     public HashMap<String, String> login(LoginDTO loginRequest) throws Exception {
@@ -44,20 +53,27 @@ public class AuthServiceImpl implements IAuthService {
             if (user.isEmpty()) {
                 jwt.put("error", "User not registered!");
                 logger.warn("Login attempt with unregistered email: {}", loginRequest.getEmail());
+                logger.warn("Login attempt with unregistered email: {}", loginRequest.getEmail());
                 return jwt;
             }
             if (verifyPassword(loginRequest.getPassword(), user.get().getPassword())) {
                 jwt.put("jwt", jwtUtilityService.generateJWT(user.get().getId()));
                 logger.info("User {} logged in successfully.", loginRequest.getEmail());
+                logger.info("User {} logged in successfully.", loginRequest.getEmail());
             } else {
                 jwt.put("error", "Authentication failed");
+                logger.warn("Failed login attempt for user: {}", loginRequest.getEmail());
                 logger.warn("Failed login attempt for user: {}", loginRequest.getEmail());
             }
             return jwt;
         } catch (IllegalArgumentException e) {
             // Solo lanza la excepción sin registrar
             throw new IllegalArgumentException("Error generating JWT", e);
+            // Solo lanza la excepción sin registrar
+            throw new IllegalArgumentException("Error generating JWT", e);
         } catch (Exception e) {
+            // Solo lanza la excepción sin registrar
+            throw new IllegalArgumentException("Unknown error", e);
             // Solo lanza la excepción sin registrar
             throw new IllegalArgumentException("Unknown error", e);
         }
@@ -71,12 +87,15 @@ public class AuthServiceImpl implements IAuthService {
 
             if (response.getNumOfErrors() > 0) {
                 logger.warn("User registration failed due to validation errors: {}", response);
+            if (response.getNumOfErrors() > 0) {
+                logger.warn("User registration failed due to validation errors: {}", response);
                 return response;
             }
 
             for (UserEntity existingUser : getAllUsers) {
                 if (existingUser != null && existingUser.getEmail().equals(user.getEmail())) {
                     response.setMessage("User with this email already exists!");
+                    logger.warn("Attempt to register existing user: {}", user.getEmail());
                     logger.warn("Attempt to register existing user: {}", user.getEmail());
                     return response;
                 }
@@ -87,10 +106,13 @@ public class AuthServiceImpl implements IAuthService {
             userRepository.save(user);
             response.setMessage("User created successfully!");
             logger.info("User {} registered successfully.", user.getEmail());
+            logger.info("User {} registered successfully.", user.getEmail());
             return response;
         } catch (Exception e) {
             // Solo lanza la excepción sin registrar
             throw new IllegalArgumentException("Error during registration", e);
+            // Solo lanza la excepción sin registrar
+            throw new Exception("Error during registration", e);
         }
     }
 
