@@ -12,21 +12,28 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class AuthServiceImpl implements IAuthService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final IJWTUtilityService jwtUtilityService;
+    private final UserValidations userValidations;
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class); // Logger instance
 
     @Autowired
-    private IJWTUtilityService jwtUtilityService;
-
-    @Autowired
-    private UserValidations userValidations;
+    public AuthServiceImpl(UserRepository userRepository, IJWTUtilityService jwtUtilityService,
+            UserValidations userValidations) {
+        this.userRepository = userRepository;
+        this.jwtUtilityService = jwtUtilityService;
+        this.userValidations = userValidations;
+    }
 
     @Override
     public HashMap<String, String> login(LoginDTO loginRequest) throws Exception {
@@ -36,20 +43,23 @@ public class AuthServiceImpl implements IAuthService {
 
             if (user.isEmpty()) {
                 jwt.put("error", "User not registered!");
+                logger.warn("Login attempt with unregistered email: {}", loginRequest.getEmail());
                 return jwt;
             }
             if (verifyPassword(loginRequest.getPassword(), user.get().getPassword())) {
                 jwt.put("jwt", jwtUtilityService.generateJWT(user.get().getId()));
+                logger.info("User {} logged in successfully.", loginRequest.getEmail());
             } else {
                 jwt.put("error", "Authentication failed");
+                logger.warn("Failed login attempt for user: {}", loginRequest.getEmail());
             }
             return jwt;
         } catch (IllegalArgumentException e) {
-            System.err.println("Error generating JWT: " + e.getMessage());
-            throw new Exception("Error generating JWT", e);
+            // Solo lanza la excepción sin registrar
+            throw new IllegalArgumentException("Error generating JWT", e);
         } catch (Exception e) {
-            System.err.println("Unknown error: " + e.toString());
-            throw new Exception("Unknown error", e);
+            // Solo lanza la excepción sin registrar
+            throw new IllegalArgumentException("Unknown error", e);
         }
     }
 
@@ -59,13 +69,15 @@ public class AuthServiceImpl implements IAuthService {
             ResponseDTO response = userValidations.validate(user);
             List<UserEntity> getAllUsers = userRepository.findAll();
 
-            if (response.getNumOfErrors() > 0){
+            if (response.getNumOfErrors() > 0) {
+                logger.warn("User registration failed due to validation errors: {}", response);
                 return response;
             }
 
             for (UserEntity existingUser : getAllUsers) {
                 if (existingUser != null && existingUser.getEmail().equals(user.getEmail())) {
                     response.setMessage("User with this email already exists!");
+                    logger.warn("Attempt to register existing user: {}", user.getEmail());
                     return response;
                 }
             }
@@ -74,9 +86,11 @@ public class AuthServiceImpl implements IAuthService {
             user.setPassword(encoder.encode(user.getPassword()));
             userRepository.save(user);
             response.setMessage("User created successfully!");
+            logger.info("User {} registered successfully.", user.getEmail());
             return response;
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            // Solo lanza la excepción sin registrar
+            throw new Exception("Error during registration", e);
         }
     }
 
