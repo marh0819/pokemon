@@ -47,7 +47,12 @@ public class AuthServiceImpl implements IAuthService {
                 return jwt;
             }
             if (verifyPassword(loginRequest.getPassword(), user.get().getPassword())) {
+                // Incluimos el firstName en la respuesta
                 jwt.put("jwt", jwtUtilityService.generateJWT(user.get().getId()));
+                jwt.put("firstName", user.get().getFirstName()); // Añadimos el nombre del usuario
+                jwt.put("lastName", user.get().getLastName()); // Añadimos el apellido del usuario
+                jwt.put("email", user.get().getEmail()); // Añadimos el apellido del usuario
+                jwt.put("id", user.get().getId().toString()); // Añadimos el apellido del usuario
                 logger.info("User {} logged in successfully.", loginRequest.getEmail());
             } else {
                 jwt.put("error", "Authentication failed");
@@ -55,10 +60,8 @@ public class AuthServiceImpl implements IAuthService {
             }
             return jwt;
         } catch (IllegalArgumentException e) {
-            // Solo lanza la excepción sin registrar
             throw new IllegalArgumentException("Error generating JWT", e);
         } catch (Exception e) {
-            // Solo lanza la excepción sin registrar
             throw new IllegalArgumentException("Unknown error", e);
         }
     }
