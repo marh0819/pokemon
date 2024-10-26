@@ -4,6 +4,7 @@ import co.edu.uceva.pokemon.persistence.entities.UserEntity;
 import co.edu.uceva.pokemon.persistence.repositories.UserRepository;
 import co.edu.uceva.pokemon.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,19 +29,25 @@ public class UserServiceImpl implements IUserService {
     }
 
     // Implementación del método para actualizar un usuario
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserEntity updateUser(Long id, UserEntity updatedUser) {
-        Optional<UserEntity> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            UserEntity existingUser = user.get();
-            // Actualiza los campos con los valores del usuario que recibes
+        UserEntity existingUser = userRepository.findById(id).orElse(null);
+        if (existingUser != null) {
             existingUser.setFirstName(updatedUser.getFirstName());
             existingUser.setLastName(updatedUser.getLastName());
             existingUser.setEmail(updatedUser.getEmail());
-            existingUser.setPassword(updatedUser.getPassword());
-            return userRepository.save(existingUser); // Guarda los cambios
+
+            // Solo hash si la contraseña es diferente
+            if (!existingUser.getPassword().equals(updatedUser.getPassword())) {
+                existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            }
+
+            return userRepository.save(existingUser);
         }
-        return null; // Retorna null si no encuentra el usuario
+        return null;
     }
 
     // Implementación del método para eliminar un usuario por ID

@@ -56,12 +56,5 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    // Método para guardar un nuevo usuario
-    @PostMapping("/save")
-    private ResponseEntity<UserEntity> saveUser(@RequestBody UserEntity newUser) {
-        UserEntity savedUser = userService.saveUser(newUser);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-    }
 }
 

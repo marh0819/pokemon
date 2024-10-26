@@ -35,7 +35,9 @@ public class SecurityConfiguration {
                                 .authorizeHttpRequests(authRequest -> authRequest
                                                 // .requestMatchers("/auth/**").permitAll()
                                                 .requestMatchers("/**").permitAll()
-                                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // Permite las solicitudes OPTIONS
+                                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permite las
+                                                                                                        // solicitudes
+                                                                                                        // OPTIONS
                                                 .anyRequest().authenticated())
                                 .sessionManagement(sessionManager -> sessionManager
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
