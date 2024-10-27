@@ -22,8 +22,14 @@ public class AuthController {
     private IAuthService authService;
 
     @PostMapping("/register")
-    private ResponseEntity<ResponseDTO> addUser(@RequestBody UserEntity user) throws Exception {
-        return new ResponseEntity<>(authService.register(user), HttpStatus.OK);
+    private ResponseEntity<HashMap<String, String>> addUser(@RequestBody UserEntity user) throws Exception {
+        HashMap<String, String> response = authService.register(user);
+
+        if (response.containsKey("error")) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/login")

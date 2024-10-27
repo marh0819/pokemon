@@ -9,5 +9,5 @@ import java.util.HashMap;
 public interface IAuthService {
 
     public HashMap<String, String> login(LoginDTO loginRequest) throws Exception;
-    public ResponseDTO register(UserEntity user) throws Exception;
+    public HashMap<String, String> register(UserEntity user) throws Exception;
 }

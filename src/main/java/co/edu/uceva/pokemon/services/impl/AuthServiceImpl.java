@@ -51,8 +51,8 @@ public class AuthServiceImpl implements IAuthService {
                 jwt.put("jwt", jwtUtilityService.generateJWT(user.get().getId()));
                 jwt.put("firstName", user.get().getFirstName()); // Añadimos el nombre del usuario
                 jwt.put("lastName", user.get().getLastName()); // Añadimos el apellido del usuario
-                jwt.put("email", user.get().getEmail()); // Añadimos el apellido del usuario
-                jwt.put("id", user.get().getId().toString()); // Añadimos el apellido del usuario
+                jwt.put("email", user.get().getEmail()); // Añadimos el email del usuario
+                jwt.put("id", user.get().getId().toString()); // Añadimos el id del usuario
                 logger.info("User {} logged in successfully.", loginRequest.getEmail());
             } else {
                 jwt.put("error", "Authentication failed");
@@ -67,34 +67,39 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public ResponseDTO register(UserEntity user) throws Exception {
+    public HashMap<String, String> register(UserEntity user) throws Exception {
+        HashMap<String, String> response = new HashMap<>();
         try {
-            ResponseDTO response = userValidations.validate(user);
-            List<UserEntity> getAllUsers = userRepository.findAll();
-
-            if (response.getNumOfErrors() > 0) {
-                logger.warn("User registration failed due to validation errors: {}", response);
+            // Validar el usuario antes de registrarlo
+            ResponseDTO validationResponse = userValidations.validate(user);
+            if (validationResponse.getNumOfErrors() > 0) {
+                response.put("error", "User validation failed: " + validationResponse.getMessage());
                 return response;
             }
 
-            for (UserEntity existingUser : getAllUsers) {
-                if (existingUser != null && existingUser.getEmail().equals(user.getEmail())) {
-                    response.setMessage("User with this email already exists!");
-                    logger.warn("Attempt to register existing user: {}", user.getEmail());
-                    return response;
-                }
+            // Verificar si el usuario ya existe
+            if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+                response.put("error", "User with this email already exists!");
+                logger.warn("Attempt to register existing user: {}", user.getEmail());
+                return response;
             }
 
+            // Codificar la contraseña y guardar el usuario
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
             user.setPassword(encoder.encode(user.getPassword()));
             userRepository.save(user);
-            response.setMessage("User created successfully!");
-            logger.info("User {} registered successfully.", user.getEmail());
-            return response;
+
+            // Agregar información del usuario y el token en la respuesta
+            response.put("id", user.getId().toString());
+            response.put("firstName", user.getFirstName());
+            response.put("lastName", user.getLastName());
+            response.put("email", user.getEmail());
+
+            logger.info("User {} registered successfully with JWT.", user.getEmail());
         } catch (Exception e) {
-            // Solo lanza la excepción sin registrar
             throw new IllegalArgumentException("Error during registration", e);
         }
+        return response;
     }
 
     private boolean verifyPassword(String enteredPassword, String storedPassword) {
