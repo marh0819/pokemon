@@ -21,46 +21,60 @@ public class TriviaController {
     public ResponseEntity<List<Question>> getTriviaQuestions() {
         // Preguntas aleatorias de la trivia relacionadas con Hoenn
         List<Question> questions = List.of(
-                new Question("¿Cuál es el Pokémon inicial de tipo fuego en la región de Hoenn?",
-                        List.of("Torchic", "Mudkip", "Treecko"), "Torchic"),
-                new Question("¿Cuál es el Pokémon legendario que representa la tierra en Hoenn?",
-                        List.of("Groudon", "Kyogre", "Rayquaza"), "Groudon"),
-                new Question("¿Qué tipo de Pokémon es Swampert?", List.of("Agua/Tierra", "Agua", "Tierra"),
-                        "Agua/Tierra"),
-                new Question("¿Cuál es la evolución final de Treecko?", List.of("Grovyle", "Sceptile", "Torchic"),
-                        "Sceptile"),
-                new Question("¿Qué Pokémon es conocido como el 'Pokémon Felicidad'?",
-                        List.of("Blissey", "Chansey", "Azurill"), "Azurill"),
-                new Question("¿Qué líder de gimnasio utiliza Pokémon de tipo Roca en Hoenn?",
-                        List.of("Roxanne", "Brawly", "Wattson"), "Roxanne"),
-                new Question("¿Cuál es el nombre del equipo villano que busca expandir los océanos en Hoenn?",
-                        List.of("Team Aqua", "Team Magma", "Team Rocket"), "Team Aqua"),
-                new Question("¿Qué Pokémon es el guardián de los cielos en Hoenn?",
-                        List.of("Rayquaza", "Latios", "Kyogre"), "Rayquaza"),
-                new Question("¿Cuál es el Pokémon inicial de tipo agua en la región de Hoenn?",
-                        List.of("Mudkip", "Torchic", "Treecko"), "Mudkip"),
-                new Question("¿Qué Pokémon tiene la habilidad Intimidación en Hoenn?",
-                        List.of("Mightyena", "Zangoose", "Swellow"), "Mightyena"),
-                new Question("¿Qué tipo de Pokémon es Gardevoir?", List.of("Psíquico/Hada", "Hada", "Psíquico"),
-                        "Psíquico/Hada"),
-                new Question("¿Qué Pokémon legendario puede calmar a Kyogre y Groudon?",
-                        List.of("Rayquaza", "Latias", "Latios"), "Rayquaza"),
-                new Question("¿Cuál es el nombre del Pokémon fósil que se puede obtener en Hoenn?",
-                        List.of("Anorith", "Kabuto", "Omanyte"), "Anorith"),
-                new Question("¿Qué Pokémon evoluciona a través de la amistad en Hoenn?",
-                        List.of("Golbat", "Eevee", "Budew"), "Golbat"),
-                new Question("¿Qué ciudad de Hoenn tiene un gimnasio de tipo eléctrico?",
-                        List.of("Mauville City", "Rustboro City", "Petalburg City"), "Mauville City"),
-                new Question("¿Cuál es el tipo de ataque que es súper efectivo contra los Pokémon de tipo Dragón?",
-                        List.of("Hielo", "Fuego", "Agua"), "Hielo"),
-                new Question("¿Qué objeto se necesita para evolucionar a Clamperl en Huntail?",
-                        List.of("Diente Marino", "Escama Marina", "Piedra Agua"), "Diente Marino"),
-                new Question("¿Cuál es el Pokémon conocido por tener múltiples formas en Hoenn?",
-                        List.of("Castform", "Deoxys", "Unown"), "Castform"),
-                new Question("¿Qué tipo de Pokémon es débil contra los ataques de tipo Volador?",
-                        List.of("Bicho", "Fuego", "Tierra"), "Bicho"),
-                new Question("¿Cuál es el nombre del campeón de la Liga Pokémon en la región de Hoenn?",
-                        List.of("Steven", "Wallace", "Drake"), "Steven"));
+        new Question("¿Cuál es el Pokémon inicial de tipo fuego en la región de Hoenn?",
+                List.of("Torchic", "Mudkip", "Treecko"), "Torchic"),
+        new Question("¿Cuál es el Pokémon legendario que representa la tierra en Hoenn?",
+                List.of("Groudon", "Kyogre", "Rayquaza"), "Groudon"),
+        new Question("¿Qué tipo de Pokémon es Swampert?", List.of("Agua/Tierra", "Agua", "Tierra"),
+                "Agua/Tierra"),
+        new Question("¿Cuál es la evolución final de Treecko?", List.of("Grovyle", "Sceptile", "Torchic"),
+                "Sceptile"),
+        new Question("¿Qué Pokémon es conocido como el 'Pokémon Felicidad'?",
+                List.of("Blissey", "Chansey", "Azurill"), "Azurill"),
+        new Question("¿Qué líder de gimnasio utiliza Pokémon de tipo Roca en Hoenn?",
+                List.of("Roxanne", "Brawly", "Wattson"), "Roxanne"),
+        new Question("¿Cuál es el nombre del equipo villano que busca expandir los océanos en Hoenn?",
+                List.of("Team Aqua", "Team Magma", "Team Rocket"), "Team Aqua"),
+        new Question("¿Qué Pokémon es el guardián de los cielos en Hoenn?",
+                List.of("Rayquaza", "Latios", "Kyogre"), "Rayquaza"),
+        new Question("¿Cuál es el Pokémon inicial de tipo agua en la región de Hoenn?",
+                List.of("Mudkip", "Torchic", "Treecko"), "Mudkip"),
+        new Question("¿Qué Pokémon tiene la habilidad Intimidación en Hoenn?",
+                List.of("Mightyena", "Zangoose", "Swellow"), "Mightyena"),
+        new Question("¿Qué tipo de Pokémon es Gardevoir?", List.of("Psíquico/Hada", "Hada", "Psíquico"),
+                "Psíquico/Hada"),
+        new Question("¿Qué Pokémon legendario puede calmar a Kyogre y Groudon?",
+                List.of("Rayquaza", "Latias", "Latios"), "Rayquaza"),
+        new Question("¿Cuál es el nombre del Pokémon fósil que se puede obtener en Hoenn?",
+                List.of("Anorith", "Kabuto", "Omanyte"), "Anorith"),
+        new Question("¿Qué Pokémon evoluciona a través de la amistad en Hoenn?",
+                List.of("Golbat", "Eevee", "Budew"), "Golbat"),
+        new Question("¿Qué ciudad de Hoenn tiene un gimnasio de tipo eléctrico?",
+                List.of("Mauville City", "Rustboro City", "Petalburg City"), "Mauville City"),
+        new Question("¿Cuál es el tipo de ataque que es súper efectivo contra los Pokémon de tipo Dragón?",
+                List.of("Hielo", "Fuego", "Agua"), "Hielo"),
+        new Question("¿Qué objeto se necesita para evolucionar a Clamperl en Huntail?",
+                List.of("Diente Marino", "Escama Marina", "Piedra Agua"), "Diente Marino"),
+        new Question("¿Cuál es el Pokémon conocido por tener múltiples formas en Hoenn?",
+                List.of("Castform", "Deoxys", "Unown"), "Castform"),
+        new Question("¿Qué tipo de Pokémon es débil contra los ataques de tipo Volador?",
+                List.of("Bicho", "Fuego", "Tierra"), "Bicho"),
+        new Question("¿Cuál es el nombre del campeón de la Liga Pokémon en la región de Hoenn?",
+                List.of("Steven", "Wallace", "Drake"), "Steven"),
+        new Question("¿Cuál es el Pokémon dragón legendario que habita en el cielo de Hoenn?",
+                List.of("Rayquaza", "Salamence", "Latios"), "Rayquaza"),
+        new Question("¿Qué Pokémon tiene la habilidad Llovizna en Hoenn?",
+                List.of("Kyogre", "Groudon", "Rayquaza"), "Kyogre"),
+        new Question("¿Cuál es el movimiento característico de Groudon?", 
+                List.of("Filo del Abismo", "Hidrocañón", "Bola Sombra"), "Filo del Abismo"),
+        new Question("¿Qué Pokémon en Hoenn evoluciona mediante una Piedra Solar?",
+                List.of("Bellossom", "Ludicolo", "Vileplume"), "Bellossom"),
+        new Question("¿Cuál es la habilidad característica de Sableye?",
+                List.of("Imprudente", "Cacheo", "Espejo Mágico"), "Cacheo"),
+        new Question("¿Cuál es el único tipo que resiste todos los ataques de tipo Fantasma?",
+                List.of("Siniestro", "Normal", "Acero"), "Normal")
+);
+
 
         // Seleccionar aleatoriamente 5 preguntas
         Random random = new Random();
@@ -73,25 +87,7 @@ public class TriviaController {
         return new ResponseEntity<>(selectedQuestions, HttpStatus.OK);
     }
 
-    @PostMapping("/submit-score/{userId}")
-    public ResponseEntity<UserEntity> submitScore(@PathVariable Long userId, @RequestParam Integer score) {
-        UserEntity user = userService.findUserById(userId);
-        if (user != null) {
-            // Actualizar el puntaje más reciente
-            user.setLatestScore(score);
-
-            // Actualizar el puntaje más alto si el actual es mayor
-            if (user.getHighestScore() == null || score > user.getHighestScore()) {
-                user.setHighestScore(score);
-            }
-
-            // Guardar los cambios
-            userService.saveUser(user);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+ 
 
     // Clase interna para representar una pregunta de trivia
     public static class Question {
