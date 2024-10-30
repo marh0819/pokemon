@@ -18,4 +18,10 @@ public class UserEntity {
     private String lastName;
     private String email;
     private String password;
+
+    // Campos para puntajes de la trivia
+    @Column(name = "latest_score")
+    private Integer latestScore;
+    @Column(name = "highest_score")
+    private Integer highestScore;
 }

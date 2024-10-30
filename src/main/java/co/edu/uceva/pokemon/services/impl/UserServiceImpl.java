@@ -21,16 +21,11 @@ public class UserServiceImpl implements IUserService {
         return userRepository.findAll();
     }
 
-    // Implementación del método para buscar usuario por ID
     @Override
     public UserEntity findUserById(Long id) {
         Optional<UserEntity> user = userRepository.findById(id);
-        return user.orElse(null); // Retorna null si no encuentra el usuario
+        return user.orElse(null);
     }
-
-    // Implementación del método para actualizar un usuario
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserEntity updateUser(Long id, UserEntity updatedUser) {
@@ -40,9 +35,8 @@ public class UserServiceImpl implements IUserService {
             existingUser.setLastName(updatedUser.getLastName());
             existingUser.setEmail(updatedUser.getEmail());
 
-            // Solo hash si la contraseña es diferente
             if (!existingUser.getPassword().equals(updatedUser.getPassword())) {
-                existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+                existingUser.setPassword(updatedUser.getPassword());
             }
 
             return userRepository.save(existingUser);
@@ -50,19 +44,17 @@ public class UserServiceImpl implements IUserService {
         return null;
     }
 
-    // Implementación del método para eliminar un usuario por ID
     @Override
     public boolean deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
-            return true; // Retorna true si se elimina correctamente
+            return true;
         }
-        return false; // Retorna false si no se encuentra el usuario
+        return false;
     }
 
     @Override
     public UserEntity saveUser(UserEntity newUser) {
         return userRepository.save(newUser);
     }
-
 }

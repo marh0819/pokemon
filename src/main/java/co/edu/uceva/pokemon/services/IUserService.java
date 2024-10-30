@@ -13,7 +13,5 @@ public interface IUserService {
 
     boolean deleteUser(Long id);
 
-    // Método para guardar un nuevo usuario
     UserEntity saveUser(UserEntity newUser);
 }
-
