@@ -14,7 +14,10 @@ import java.util.Optional;
 public class UserServiceImpl implements IUserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder; // Inyectamos el PasswordEncoder
 
     @Override
     public List<UserEntity> findAllUsers() {
@@ -35,8 +38,10 @@ public class UserServiceImpl implements IUserService {
             existingUser.setLastName(updatedUser.getLastName());
             existingUser.setEmail(updatedUser.getEmail());
 
-            if (!existingUser.getPassword().equals(updatedUser.getPassword())) {
-                existingUser.setPassword(updatedUser.getPassword());
+            // Verificar si la contraseña ha cambiado
+            if (!passwordEncoder.matches(updatedUser.getPassword(), existingUser.getPassword())) {
+                // Si la contraseña ha cambiado, la encriptamos
+                existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
             }
 
             return userRepository.save(existingUser);
