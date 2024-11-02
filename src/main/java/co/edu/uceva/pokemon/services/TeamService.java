@@ -12,4 +12,5 @@ public interface TeamService {
     TeamDTO createTeam(CreateTeamRequestDTO teamRequest);
     TeamDTO getTeamById(Long teamId);
     TeamDTO addPokemonToTeam(Long teamId, PokemonDTO pokemonDTO);
+    TeamDTO removePokemonFromTeam(Long teamId, Integer pokedexNumber);
 }

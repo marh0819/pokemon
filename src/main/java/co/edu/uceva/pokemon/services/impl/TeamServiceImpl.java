@@ -103,4 +103,30 @@ public class TeamServiceImpl implements TeamService {
                 return new TeamDTO(team.getId(), team.getUser().getId(), pokemonDTOs);
         }
 
+        @Transactional
+        @Override
+        public TeamDTO removePokemonFromTeam(Long teamId, Integer pokedexNumber) {
+                // Buscar el equipo
+                TeamEntity team = teamRepository.findById(teamId)
+                                .orElseThrow(() -> new RuntimeException("Team not found"));
+
+                // Buscar el Pokémon a eliminar
+                PokemonEntity pokemon = team.getPokemons().stream()
+                                .filter(p -> p.getPokedexNumber().equals(pokedexNumber))
+                                .findFirst()
+                                .orElseThrow(() -> new RuntimeException("Pokemon not found in team"));
+
+                // Eliminar el Pokémon del equipo
+                team.getPokemons().remove(pokemon);
+                pokemonRepository.delete(pokemon); // Eliminar el Pokémon de la base de datos
+
+                // Crear la lista actualizada de PokemonDTO
+                List<PokemonDTO> updatedPokemonList = team.getPokemons().stream()
+                                .map(p -> new PokemonDTO(p.getPokedexNumber(), p.getName()))
+                                .collect(Collectors.toList());
+
+                // Devolver el TeamDTO con la lista actualizada
+                return new TeamDTO(team.getId(), team.getUser().getId(), updatedPokemonList);
+        }
+
 }

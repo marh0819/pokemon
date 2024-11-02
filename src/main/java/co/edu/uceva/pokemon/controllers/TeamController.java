@@ -42,12 +42,15 @@ public class TeamController {
         try {
             // Crear PokemonDTO desde CreateTeamRequestDTO
             PokemonDTO pokemonDTO = new PokemonDTO(teamRequest.getPokedexNumber(), teamRequest.getName());
-            System.out.println("Despues de: PokemonDTO pokemonDTO = new PokemonDTO(teamRequest.getPokedexNumber(), teamRequest.getName()); Converting to PokemonEntity: PokedexNumber - " + pokemonDTO.getPokedexNumber() + ", Name - " + pokemonDTO.getName());
+            System.out.println(
+                    "Despues de: PokemonDTO pokemonDTO = new PokemonDTO(teamRequest.getPokedexNumber(), teamRequest.getName()); Converting to PokemonEntity: PokedexNumber - "
+                            + pokemonDTO.getPokedexNumber() + ", Name - " + pokemonDTO.getName());
 
             // Llamar al servicio con el tipo correcto
             TeamDTO updatedTeam = teamService.addPokemonToTeam(teamId, pokemonDTO);
-            System.out.println("Despues de: TeamDTO updatedTeam = teamService.addPokemonToTeam(teamId, pokemonDTO); Converting to PokemonEntity: PokedexNumber - " + pokemonDTO.getPokedexNumber() + ", Name - " + pokemonDTO.getName());
-
+            System.out.println(
+                    "Despues de: TeamDTO updatedTeam = teamService.addPokemonToTeam(teamId, pokemonDTO); Converting to PokemonEntity: PokedexNumber - "
+                            + pokemonDTO.getPokedexNumber() + ", Name - " + pokemonDTO.getName());
 
             return new ResponseEntity<>(updatedTeam, HttpStatus.OK);
         } catch (Exception e) {
@@ -60,4 +63,17 @@ public class TeamController {
         TeamDTO team = teamService.getTeamById(teamId);
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{teamId}/removePokemon/{pokedexNumber}")
+    public ResponseEntity<?> removePokemonFromTeam(
+            @PathVariable Long teamId,
+            @PathVariable Integer pokedexNumber) {
+        try {
+            teamService.removePokemonFromTeam(teamId, pokedexNumber);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
